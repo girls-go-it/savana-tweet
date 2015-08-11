@@ -1,6 +1,8 @@
 from flask.ext.sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+from app import app
+
+db = SQLAlchemy(app)
 
 class Animal(db.Model):
     id = db.Column(db.Integer, primary_key=True)
