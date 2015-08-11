@@ -1,9 +1,6 @@
-from flask.ext.bootstrap import Bootstrap
 from flask import render_template
 
 from app import app
-
-bootstrap = Bootstrap(app)
 
 @app.route('/')
 def hello_world():
