@@ -2,16 +2,22 @@
 {% block content %}
 <div class="col-lg-3 col-md-offset-4">
   <h2>Login</h2>
-  <form id="login-form" class="text-left" method="post">
-    <div class="main-login-form">
-      <div class="form-group">
-        <input type="text" class="form-control" name="username" placeholder="username">
-      </div>
-      <div class="form-group">
-        <input type="password" class="form-control" name="password" placeholder="password">
-      </div>
-      <button type="button" class="btn btn-primary">Submit</button>
-    </div>
-  </form>
+
+  	<form method="POST" action="/login" role="form" class="" enctype="multipart/form-data">
+		  	<div class="form-group {% if form.username.errors %}has-error{% endif %} ">
+			  		{{ form.username(class_='form-control', placeholder=form.username.id) }}
+			  </div>
+
+			  <div class="form-group {% if form.password.errors %}has-error{% endif %} ">
+			  		{{ form.password(class_='form-control', placeholder=form.password.id, type='password') }}
+			  </div>
+
+			  <input type="file" name="file" class="form-control">
+
+			  <div class="form-group ">
+			  		{{ form.submit(class_='btn btn-default') }}
+			  </div>
+    </form>
+
 <div>
 {% endblock %}
