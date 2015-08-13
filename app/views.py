@@ -1,6 +1,6 @@
 from flask import render_template, request
 from models import db
-from forms 	import LoginForm, ProfileForm
+from forms import LoginForm, ProfileForm
 from werkzeug import secure_filename
 from app import app
 from pprint import pprint
@@ -18,21 +18,20 @@ def hello_world():
 
 @app.route('/login', methods=['GET'])
 def login_get():
-	form = LoginForm()
-	return render_template('login.html', form=form)
-
+    form = LoginForm()
+    return render_template('login.html', form=form)
 
 @app.route('/login', methods=['POST'])
 def login_post():
-	file = request.files['file']
-	if file and allowed_file(file.filename):
-		filename = secure_filename(file.filename)
-		file.save(os.path.join(sys.path[0], app.config['UPLOAD_FOLDER'], filename))
-		print filename
-		return render_template('profile.html', data={'photo':filename})
-	
-	form = LoginForm(request.form)
-	return render_template('login.html', form=form)
+    file = request.files['file']
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(sys.path[0], app.config['UPLOAD_FOLDER'], filename))
+        print filename
+        return render_template('profile.html', data={'photo':filename})
+
+    form = LoginForm(request.form)
+    return render_template('login.html', form=form)
 
 @app.route('/feed')
 def feed():
@@ -40,20 +39,18 @@ def feed():
 
 @app.route('/profile', methods=['GET'])
 def profile_get():
-	form = ProfileForm()
-
-	pprint(form.photo)
-
-	return render_template('profile.html', data={'form':form,'photo':''})
+    form = ProfileForm()
+    pprint(form.photo)
+    return render_template('profile.html', data={'form':form,'photo':''})
 
 @app.route('/profile', methods=['POST'])
 def profile_post():
-	file = request.files['file']
-	print file
-	if file and allowed_file(file.filename):
-		filename = secure_filename(file.filename)
-		file.save(os.path.join(sys.path[0], app.config['UPLOAD_FOLDER'], filename))
-		print filename
+    file = request.files['file']
+    print file
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(sys.path[0], app.config['UPLOAD_FOLDER'], filename))
+        print filename
 
-	form = ProfileForm(request.form)
-	return render_template('profile.html', data={'form':form,'photo':filename})
+    form = ProfileForm(request.form)
+    return render_template('profile.html', data={'form':form,'photo':filename})
