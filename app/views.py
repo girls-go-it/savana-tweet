@@ -94,7 +94,7 @@ def feed():
 @app.route('/profile', methods=['GET'])
 def profile_get():
     form = ProfileForm()
-    pprint(form.photo)
+
     return render_template('profile.html', data={'form':form,'photo':''})
 
 @app.route('/profile', methods=['POST'])
