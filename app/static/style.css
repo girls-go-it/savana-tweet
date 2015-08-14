@@ -2,6 +2,8 @@
   border-radius: 7px;
   border: 1px solid #9C9C9C;
   float: left;
+  width: 75px;
+  height: 75px;
 }
 
 .post-content {

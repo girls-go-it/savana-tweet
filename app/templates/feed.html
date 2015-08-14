@@ -11,15 +11,20 @@
 </div>
 
 <div class="col-lg-6">
-  <div class="thumbnail clearfix">
-    <div class="side-post">
-      <img src="https://pbs.twimg.com/profile_images/605416624674373633/O11iO7oy_bigger.jpg" alt="poster image">
+  {% for post in posts %}
+    <div class="thumbnail clearfix">
+      <div class="side-post">
+        <img src="{{ post.animal.image_url }}" alt="poster image">
+      </div>
+      <div class="post-content">
+        <h5>Likes: {{ post.likes }} </h5>
+        <h4>{{ post.animal.name }}</h4>
+        <p>{{ post.content }}</p>
+      </div>
+      <form action="/posts/{{ post.id }}/like" method="POST">
+        <input class="btn btn-link" type="submit" value="Like" style="margin-left: 548px;"/>
+      </form>
     </div>
-    <div class="post-content">
-      <h4>Sender</h4>
-
-      <p>Lorem </p>
-    <div>
-  </div>
+  {% endfor %}
 </div>
 {% endblock %}

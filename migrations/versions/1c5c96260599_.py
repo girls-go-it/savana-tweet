@@ -32,6 +32,7 @@ def upgrade():
     sa.Column('image_url', sa.String(length=255), nullable=True),
     sa.Column('likes', sa.Integer(), nullable=True),
     sa.Column('animal_id', sa.Integer(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['animal_id'], ['animal.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

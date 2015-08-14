@@ -1,16 +1,29 @@
 from flask import render_template, request
-from models import db
 from forms import LoginForm, ProfileForm
 from werkzeug import secure_filename
-from app import app
 from pprint import pprint
+from flask import redirect, url_for
 import os, sys
+
+from sqlalchemy import desc
+from app.models import Post
+from app import db
+
+from app import app 
+
 
 app.secret_key = 'development key'
 
 def allowed_file(filename):
     return '.' in filename and \
         	filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+
+@app.route('/posts/<int:post_id>/like', methods=['POST'])
+def like_post(post_id):
+    post = Post.query.get(post_id)
+    post.like()
+    db.session.commit()
+    return redirect(url_for('feed'))
 
 @app.route('/')
 def hello_world():
@@ -35,7 +48,8 @@ def login_post():
 
 @app.route('/feed')
 def feed():
-    return render_template('feed.html')
+    posts = Post.query.order_by(desc(Post.created_at)).all()
+    return render_template('feed.html', posts=posts)
 
 @app.route('/profile', methods=['GET'])
 def profile_get():
