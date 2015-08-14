@@ -2,3 +2,6 @@ venv/
 .idea/
 *.pyc
 .DS_Store
+app/static/uploads/
+instance/db_repository/versions/
+*.db
