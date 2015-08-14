@@ -38,6 +38,7 @@ def before_request():
 
 @app.route('/')
 def hello_world():
+    print 'test'
     return render_template('base.html')
 
 #@app.route('/login', methods=['GET'])
