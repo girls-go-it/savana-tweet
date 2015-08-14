@@ -32,13 +32,16 @@ def load_animal(id):
 
 @app.before_request
 def before_request():
-    g.user = current_user
+    try:
+        g.user = current_user
+        print 'current user'
+    except Exception:
+        print "nobody logged in!"
 
 
 
 @app.route('/')
 def hello_world():
-    print 'test'
     return render_template('base.html')
 
 #@app.route('/login', methods=['GET'])
@@ -63,16 +66,19 @@ def hello_world():
 def login():
     form = LoginForm(request.form)
     print form.data
-    if form.validate_on_submit():
-        user = Animal.query.get(username=form.username.data)
-        if user:
-            if bcrypt.check_password_hash(user.password, form.password.data):
-                user.authenticated = True
-                db.session.add(user)
-                db.session.commit()
-                login_user(user, remember=True)
-                return redirect(url_for("hello_world"))
 
+    if request.method == 'POST':
+        if form.validate():
+
+            user = Animal.query.filter_by(username=form.username.data).first()
+            print "---->", user
+            if user.check_password(form.password.data):
+                    user.authenticated = True
+                    db.session.add(user)
+                    db.session.commit()
+                    login_user(user, remember=True)
+                    return redirect(url_for("hello_world"))
+    print "banana"
     return render_template('login.html', form=form)
 
 
@@ -100,12 +106,17 @@ def profile_get():
 
 @app.route('/profile', methods=['POST'])
 def profile_post():
-    file = request.files['file']
-    print file
+    try:
+        file = request.files['file']
+    except KeyError:
+        file = None
+
+    form = ProfileForm(request.form)
+
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file.save(os.path.join(sys.path[0], app.config['UPLOAD_FOLDER'], filename))
         print filename
+        return render_template('profile.html', data={'form':form,'photo':filename})
 
-    form = ProfileForm(request.form)
-    return render_template('profile.html', data={'form':form,'photo':filename})
+    return render_template('profile.html', data={'form':form})
