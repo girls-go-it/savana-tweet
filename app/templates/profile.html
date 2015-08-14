@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="container">
+    <h1>Edit Profile</h1>
+  	<hr>
+	<div class="row">
+    <form action="/profile" class="form-horizontal" role="form" enctype="multipart/form-data" method="POST">
+      <!-- left column -->
+      <div class="col-md-3">
+        <div class="text-center">
+          <img src="/static/uploads/{{ data.photo }}" onError="this.src='//placehold.it/100'" class="avatar img-circle" alt="avatar" style="max-width: 100px;">
+          <h6>Upload a different photo...</h6>
+
+          <input type="file" name="file" class="form-control">
+        </div>
+      </div>
+      
+      <!-- edit form column -->
+      <div class="col-md-9 personal-info">
+        <div class="alert alert-info alert-dismissable">
+          <a class="panel-close close" data-dismiss="alert">×</a> 
+          <i class="fa fa-coffee"></i>
+          This is an <strong>.alert</strong>. Use this to show important messages to the user.
+        </div>
+        <h3>Personal info</h3>
+        
+          <div class="form-group">
+	          {{ data.form.name.label(class_='col-lg-3 control-label') }}
+            <div class="form-group col-lg-9 {% if data.form.name.errors %}has-error{% endif %} ">
+				  		{{ data.form.name(class_='form-control', placeholder=data.form.name.id) }}
+					  </div>
+          </div>
+          <div class="form-group">
+	          {{ data.form.fur_color.label(class_='col-lg-3 control-label') }}
+	          <div class="form-group col-lg-9 {% if data.form.fur_color.errors %}has-error{% endif %} ">
+				  		{{ data.form.fur_color(class_='form-control', placeholder=data.form.fur_color.id) }}
+					  </div>
+          </div>
+          <div class="form-group">
+	          {{ data.form.email.label(class_='col-lg-3 control-label') }}
+            <div class="form-group col-lg-9 {% if data.form.email.errors %}has-error{% endif %} ">
+				  		{{ data.form.email(class_='form-control', placeholder=data.form.email.id) }}
+					  </div>
+          </div>
+          <div class="form-group">
+	          {{ data.form.animal_type.label(class_='col-lg-3 control-label') }}
+            <div class="col-lg-8">
+              <div class="ui-select">
+                <select id="{{data.form.animal_type.id}}" class="form-control">
+                	{% for val, name in data.form.animal_type.choices: %}
+                		<option value="{{ val }}">{{ name }}</option>
+                	{% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label"></label>
+            <div class="col-md-8">
+            	{{ data.form.submit(class_='btn btn-primary') }}
+              <span></span>
+              <input type="reset" class="btn btn-default" value="Cancel">
+            </div>
+          </div>
+        </form>
+      </div>
+  </div>
+</div>
+<hr>
+
+{% endblock %}
