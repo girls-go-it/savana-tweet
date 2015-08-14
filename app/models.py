@@ -9,6 +9,9 @@ class Animal(db.Model):
     fur_color = db.Column(db.String(255))
     animal_type = db.Column(db.String(255))
     image_url = db.Column(db.String(255))
+    username = db.Column(db.String(80), unique=True)
+    about_me = db.Column(db.String(500))
+    authenticated = db.Column(db.BOOLEAN)
 
     def __init__(self, email, name, fur_color, animal_type, image_url=''):
         self.email = email
@@ -16,6 +19,21 @@ class Animal(db.Model):
         self.fur_color = fur_color
         self.animal_type = animal_type
         self.image_url = image_url
+
+    def __repr__(self):
+        return '<User %s>' % self.username
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_authenticated(self):
+        return self.authenticated
+
+    def get_id(self):
+        return str(self.email)
+
 
 class Post(db.Model):
     __tablename__ = 'post'
@@ -39,3 +57,5 @@ class Post(db.Model):
         else:
             self.likes += 1
         db.session.commit()
+
+
