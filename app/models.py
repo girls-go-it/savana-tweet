@@ -42,12 +42,14 @@ class Animal(db.Model):
     def is_active(self):
         return True
 
-    @property
     def is_authenticated(self):
         return self.authenticated
 
     def get_id(self):
         return self.id
+
+    def is_anonymous(self):
+        return False
 
 
 class Post(db.Model):
