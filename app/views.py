@@ -20,9 +20,7 @@ def allowed_file(filename):
 
 @app.route('/posts/<int:post_id>/like', methods=['POST'])
 def like_post(post_id):
-    post = Post.query.get(post_id)
-    post.like()
-    db.session.commit()
+    Post.query.get(post_id).like()
     return redirect(url_for('feed'))
 
 @app.route('/')

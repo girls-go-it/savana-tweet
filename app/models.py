@@ -38,3 +38,4 @@ class Post(db.Model):
             self.likes = 1
         else:
             self.likes += 1
+        db.session.commit()
