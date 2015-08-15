@@ -1,13 +1,13 @@
 """empty message
 
-Revision ID: 1c5c96260599
+Revision ID: 3a402b8ba43
 Revises: None
-Create Date: 2015-08-14 02:23:28.818602
+Create Date: 2015-08-15 18:33:52.777813
 
 """
 
 # revision identifiers, used by Alembic.
-revision = '1c5c96260599'
+revision = '3a402b8ba43'
 down_revision = None
 
 from alembic import op
@@ -23,16 +23,21 @@ def upgrade():
     sa.Column('fur_color', sa.String(length=255), nullable=True),
     sa.Column('animal_type', sa.String(length=255), nullable=True),
     sa.Column('image_url', sa.String(length=255), nullable=True),
+    sa.Column('username', sa.String(length=80), nullable=True),
+    sa.Column('h_password', sa.String(length=1000), nullable=True),
+    sa.Column('about_me', sa.String(length=500), nullable=True),
+    sa.Column('authenticated', sa.BOOLEAN(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('email')
+    sa.UniqueConstraint('email'),
+    sa.UniqueConstraint('username')
     )
     op.create_table('post',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('content', sa.Unicode(length=500), nullable=True),
     sa.Column('image_url', sa.String(length=255), nullable=True),
     sa.Column('likes', sa.Integer(), nullable=True),
-    sa.Column('animal_id', sa.Integer(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('animal_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['animal_id'], ['animal.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

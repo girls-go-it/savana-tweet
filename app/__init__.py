@@ -15,8 +15,7 @@ bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
 
 # Login Manager stuff
-lm = LoginManager()
-lm.init_app(app)
+lm = LoginManager(app)
 lm.login_view = 'login'
 lm.login_message = 'Please consider logging in. You don\'t have access here!'
 
