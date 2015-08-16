@@ -1,5 +1,5 @@
 from flask import render_template, request
-from forms import LoginForm, ProfileForm
+from forms import LoginForm, ProfileForm, RegisterForm
 from werkzeug import secure_filename
 from pprint import pprint
 from flask import redirect, url_for
@@ -31,6 +31,13 @@ def hello_world():
 def login_get():
     form = LoginForm()
     return render_template('login.html', form=form)
+
+@app.route('/register', methods=['GET'])
+def register_get():
+    form = RegisterForm()
+    pprint(dir(form.confirm.label))
+    pprint(form.confirm.label)
+    return render_template('register.html', form=form)
 
 @app.route('/login', methods=['POST'])
 def login_post():
