@@ -1,28 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="col-lg-3 col-md-offset-4">
-  <h2>Login</h2>
-
+    <h2>Login</h2>
   	<form method="POST" action="/login" role="form" class="" enctype="multipart/form-data">
-		  	<div class="form-group {% if form.username.errors %}has-error{% endif %} ">
-			  		{{ form.username(class_='form-control', placeholder=form.username.id) }}
+        {{ form.csrf_token }}
+        <div class="form-group {% if form.username.errors %}has-error{% endif %} ">
+            {{ form.username(class_='form-control', placeholder=form.username.id) }}
             <span class="help-block">{{ ' '.join(form.username.errors) }}</span>
-			  </div>
+        </div>
 
-			  <div class="form-group {% if form.password.errors %}has-error{% endif %} ">
-			  		{{ form.password(class_='form-control', placeholder=form.password.id, type='password') }}
+        <div class="form-group {% if form.password.errors %}has-error{% endif %} ">
+            {{ form.password(class_='form-control', placeholder=form.password.id, type='password') }}
             <span class="help-block">{{ ' '.join(form.password.errors) }}</span>
-			  </div>
+        </div>
 
-			  <div class="form-group ">
-			  		{{ form.submit(class_='btn btn-default') }}
-			  </div>
+        <div class="form-group ">
+            {{ form.submit(class_='btn btn-default') }}
+        </div>
     </form>
-
-    {% for field, error in form.errors.items() %}
-      {{ field }}
-      {{ error }}
-    {% endfor %}
-
 <div>
 {% endblock %}

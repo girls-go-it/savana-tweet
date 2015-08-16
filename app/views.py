@@ -15,7 +15,6 @@ from flask.ext import bcrypt
 
 from app import app
 
-
 app.secret_key = 'development key'
 
 def allowed_file(filename):
@@ -40,7 +39,6 @@ def before_request():
         print "nobody logged in!"
 
 
-
 @app.route('/')
 def index():
     return render_template('base.html')
@@ -57,7 +55,6 @@ def signup():
     form = LoginForm(request.form)
     return render_template('login.html', form=form)
 
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm(request.form)
@@ -68,17 +65,11 @@ def login():
         return redirect(url_for("index"))
     return render_template('login.html', form=form)
 
-
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
 def logout():
-    """Logout the current user."""
-    user = current_user
-    user.authenticated = False
-    db.session.add(user)
-    db.session.commit()
     logout_user()
-    return render_template("base.html")
+    return render_template('base.html')
 
 @app.route('/feed')
 @login_required
@@ -90,7 +81,6 @@ def feed():
 @login_required
 def profile_get():
     form = ProfileForm()
-
     return render_template('profile.html', data={'form':form,'photo':''})
 
 @app.route('/profile', methods=['POST'])

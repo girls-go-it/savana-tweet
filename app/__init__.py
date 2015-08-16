@@ -2,6 +2,7 @@ from flask import Flask, request
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.login import LoginManager
+from flask_wtf.csrf import CsrfProtect
 
 
 app = Flask(__name__, instance_relative_config=True)
@@ -13,6 +14,7 @@ bootstrap = Bootstrap(app)
 
 # Database Connection instantiation
 db = SQLAlchemy(app)
+CsrfProtect(app)
 
 # Login Manager stuff
 login_manager = LoginManager(app)

@@ -26,7 +26,6 @@ def upgrade():
     sa.Column('username', sa.String(length=80), nullable=True),
     sa.Column('h_password', sa.String(length=1000), nullable=True),
     sa.Column('about_me', sa.String(length=500), nullable=True),
-    sa.Column('authenticated', sa.BOOLEAN(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')

@@ -1,8 +1,9 @@
 from app import db
 import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask.ext.login import UserMixin
 
-class Animal(db.Model):
+class Animal(UserMixin, db.Model):
     __tablename__ = 'animal'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -14,7 +15,6 @@ class Animal(db.Model):
     username = db.Column(db.String(80), unique=True)
     h_password = db.Column(db.String(1000))
     about_me = db.Column(db.String(500))
-    authenticated = db.Column(db.BOOLEAN)
 
     # def __init__(self, email, name, username, fur_color, animal_type, password, image_url=''):
     #     self.email = email
