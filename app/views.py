@@ -1,11 +1,11 @@
 from flask import render_template, request
-from forms import LoginForm, ProfileForm
+from forms import LoginForm, ProfileForm, PostForm
 from werkzeug import secure_filename
 from pprint import pprint
 from flask import redirect, url_for
 import os, sys
-from flask import render_template, g, redirect, url_for
-from .models import Animal
+from flask import render_template, g, redirect, url_for, session, abort
+from .models import Animal, Post
 from app import app, login_manager
 from flask.ext.login import current_user, login_user, login_required, logout_user
 from sqlalchemy import desc
@@ -29,14 +29,6 @@ def like_post(post_id):
 @login_manager.user_loader
 def load_animal(animal_id):
     return Animal.query.get(animal_id)
-
-@app.before_request
-def before_request():
-    try:
-        g.user = current_user
-        print 'current user'
-    except Exception:
-        print "nobody logged in!"
 
 
 @app.route('/')
@@ -75,6 +67,7 @@ def logout():
 @login_required
 def feed():
     posts = Post.query.order_by(desc(Post.created_at)).all()
+
     return render_template('feed.html', posts=posts)
 
 @app.route('/profile', methods=['GET'])
@@ -100,3 +93,23 @@ def profile_post():
         return render_template('profile.html', data={'form':form,'photo':filename})
 
     return render_template('profile.html', data={'form':form})
+
+
+
+@app.route('/create-feed', methods=['GET', 'POST'])
+@login_required
+def created_feed():
+    form = PostForm(request.form)
+    print current_user.username
+    if form.validate_on_submit():
+        image_file = request.files.get('image', None)
+        print current_user, current_user.id, current_user.name
+        post = Post(content=form.content.data, animal=current_user)
+        if image_file and allowed_file(image_file.filename):
+            filename = secure_filename(image_file.filename)
+            image_file.save(os.path.join(sys.path[0], app.config['UPLOAD_FOLDER'], filename))
+        post.save()
+        return redirect(url_for('feed'))
+    return render_template('post_form.html', form=form)
+
+    

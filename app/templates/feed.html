@@ -14,11 +14,11 @@
   {% for post in posts %}
     <div class="thumbnail clearfix">
       <div class="side-post">
-        <img src="{{ post.animal.image_url }}" alt="poster image">
+        <img src="{% if post.animal.image_url %}{{ post.animal.image_url }}{% else %}{{ url_for('static', filename='download.png') }}{% endif %}" alt="poster image">
       </div>
       <div class="post-content">
         <h5>Likes: {{ post.likes }} </h5>
-        <h4>{{ post.animal.name }}</h4>
+        <h4>{{ post.animal.username }}</h4>
         <p>{{ post.content }}</p>
       </div>
       <form action="/posts/{{ post.id }}/like" method="POST">

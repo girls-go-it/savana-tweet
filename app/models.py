@@ -53,10 +53,10 @@ class Post(db.Model):
     animal_id = db.Column(db.Integer(), db.ForeignKey('animal.id'))
     animal = db.relationship('Animal')
 
-    def __init__(self, content, animal_id, image_url=""):
+    def __init__(self, content, animal, image_url=""):
         self.content = content
-        self.animal_id = animal_id
         self.image_url = image_url
+        self.animal = animal
 
     def like(self):
         if not self.likes:
@@ -64,4 +64,32 @@ class Post(db.Model):
         else:
             self.likes += 1
         self.save()
+
+    def __repr__(self):
+        return '<User %d>' % self.id
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class Like(db.Model):
+    __tablename__ = 'like'
+
+    id = db.Column(db.Integer, primary_key=True)
+    animal_id = db.Column(db.Integer(), db.ForeignKey('animal.id'))
+    animal = db.relationship('Animal')
+    post_id = db.Column(db.Integer(), db.ForeignKey('post.id'))
+    post = db.relationship('Post')
+
+    def __init__(self, animal, post):
+        self.animal = animal
+        self.post = post
+
+    def __repr__(self):
+        return '<Like %d>' % self.id
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
 
