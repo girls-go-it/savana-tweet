@@ -6,14 +6,14 @@ from flask import redirect, url_for
 import os, sys
 from flask import render_template, g, redirect, url_for
 from .models import Animal
-from app import app, lm
+from app import app, login_manager
 from flask.ext.login import current_user, login_user, login_required, logout_user
 from sqlalchemy import desc
 from app.models import Post
 from app import db
 from flask.ext import bcrypt
 
-from app import app 
+from app import app
 
 
 app.secret_key = 'development key'
@@ -27,9 +27,9 @@ def like_post(post_id):
     Post.query.get(post_id).like()
     return redirect(url_for('feed'))
 
-@lm.user_loader
-def load_animal(id):
-    return Animal.query.get(int(id))
+@login_manager.user_loader
+def load_animal(animal_id):
+    return Animal.query.get(animal_id)
 
 @app.before_request
 def before_request():
@@ -42,9 +42,8 @@ def before_request():
 
 
 @app.route('/')
-def hello_world():
+def index():
     return render_template('base.html')
-
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
@@ -62,20 +61,11 @@ def signup():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm(request.form)
-    print form.data
 
-    if request.method == 'POST':
-        if form.validate():
-
-            user = Animal.query.filter_by(username=form.username.data).first()
-            print "---->", user
-            if user.check_password(form.password.data):
-                    user.authenticated = True
-                    db.session.add(user)
-                    db.session.commit()
-                    login_user(user, remember=True)
-                    return redirect(url_for("hello_world"))
-    print "banana"
+    if form.validate_on_submit():
+        user = Animal.query.filter_by(username=form.username.data).first()
+        login_user(user, remember=True)
+        return redirect(url_for("index"))
     return render_template('login.html', form=form)
 
 

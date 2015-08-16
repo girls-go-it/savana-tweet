@@ -16,40 +16,30 @@ class Animal(db.Model):
     about_me = db.Column(db.String(500))
     authenticated = db.Column(db.BOOLEAN)
 
-    def __init__(self, email, name, fur_color, animal_type, username, image_url=''):
-        self.email = email
-        self.name = name
+    # def __init__(self, email, name, username, fur_color, animal_type, password, image_url=''):
+    #     self.email = email
+    #     self.name = name
+    #     self.username = username
+    #     self.fur_color = fur_color
+    #     self.animal_type = animal_type
+    #     self.image_url = image_url
+    #     self.set_password(password)
+    def __init__(self, username, password):
         self.username = username
-        self.fur_color = fur_color
-        self.animal_type = animal_type
-        self.image_url = image_url
+        self.h_password = generate_password_hash(password)
 
     def __repr__(self):
         return '<User %s>' % self.name
 
     def set_password(self, password):
-        self.h_password = generate_password_hash(password=password)
-        self.save()
-        return True
+        self.h_password = generate_password_hash(password)
 
     def save(self):
         db.session.add(self)
         db.session.commit()
 
     def check_password(self, password):
-        return check_password_hash(self.h_password, password=password)
-
-    def is_active(self):
-        return True
-
-    def is_authenticated(self):
-        return self.authenticated
-
-    def get_id(self):
-        return self.id
-
-    def is_anonymous(self):
-        return False
+        return check_password_hash(self.h_password, password)
 
 
 class Post(db.Model):
@@ -73,6 +63,5 @@ class Post(db.Model):
             self.likes = 1
         else:
             self.likes += 1
-        db.session.commit()
-
+        self.save()
 
