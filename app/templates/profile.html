@@ -18,19 +18,14 @@
       </div> -->
       
       <!-- edit form column -->
-      <div class="col-md-9 personal-info">
-        <div class="alert alert-info alert-dismissable">
-          <a class="panel-close close" data-dismiss="alert">×</a> 
-          <i class="fa fa-coffee"></i>
-          This is an <strong>.alert</strong>. Use this to show important messages to the user.
-        </div>
+      <div class="col-md-5 col-md-offset-3 personal-info">
+				{{ form.csrf_token }}
         <h3>Personal info</h3>
           <div class="form-group">
 	          {{ form.name.label(class_='col-lg-3 control-label') }}
 	            <div class="form-group col-lg-9 {% if form.name.errors %}has-error{% endif %} ">
 					{{ form.name(class_='form-control', placeholder="Change your name") }}
 				</div>
-				{{ form.csrf_token }}
           <div class="form-group">
 	          {{ form.about_me.label(class_='col-lg-3 control-label') }}
 	            <div class="form-group col-lg-9 {% if form.about_me.errors %}has-error{% endif %} ">
