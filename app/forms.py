@@ -49,15 +49,16 @@ class SignupForm(Form):
 
 class ProfileForm(Form):
     name = TextField("Name")
+    about_me = TextAreaField("Tell us about yourself")
     fur_color = TextField("Fur color")
-    email = TextField("Email")
+    email = TextField("Email", [Required()])
     animal_type = SelectField('Type', choices=[('carnivor', 'Carnivor'), ('ierbivor','Ierbivor'), ('omnivor','Omnivor')])
-    image_url = FileField('Photo'),
+    # image_url = FileField('Photo'),
     submit = SubmitField("Save")
 
 
 class PostForm(Form):
-    content = TextAreaField("Content")
+    content = TextAreaField("Content", [Required()])
     image_url = FileField("Photo")
     submit = SubmitField("Save")
 

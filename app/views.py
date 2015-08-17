@@ -89,26 +89,27 @@ def feed():
 @app.route('/profile', methods=['GET'])
 @login_required
 def profile_get():
-    form = ProfileForm()
-    return render_template('profile.html', data={'form':form,'photo':''})
+    form = ProfileForm(request.form)
+    form.name.data = current_user.name
+    form.about_me.data = current_user.about_me
+    form.fur_color.data = current_user.fur_color
+    form.email.data = current_user.email
+    form.animal_type.data = current_user.animal_type
+    return render_template('profile.html', form = form, photo = '')
 
 @app.route('/profile', methods=['POST'])
 @login_required
 def profile_post():
-    try:
-        file = request.files['file']
-    except KeyError:
-        file = None
-
     form = ProfileForm(request.form)
-
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(sys.path[0], app.config['UPLOAD_FOLDER'], filename))
-        print filename
-        return render_template('profile.html', data={'form':form,'photo':filename})
-
-    return render_template('profile.html', data={'form':form})
+    if form.validate_on_submit():
+        current_user.name = form.name.data
+        current_user.about_me = form.about_me.data
+        current_user.fur_color = form.fur_color.data
+        current_user.email = form.email.data
+        current_user.animal_type = form.animal_type.data
+        current_user.save()
+        return redirect(url_for("index"))
+    return render_template('profile.html', form=form)
 
 
 
@@ -119,12 +120,10 @@ def created_feed():
     print current_user.username
     if form.validate_on_submit():
         image_file = request.files.get('image', None)
-        print current_user, current_user.id, current_user.name
         post = Post(content=form.content.data, animal=current_user)
         if image_file and allowed_file(image_file.filename):
             filename = secure_filename(image_file.filename)
             image_file.save(os.path.join(sys.path[0], app.config['UPLOAD_FOLDER'], filename))
         post.save()
         return redirect(url_for('feed'))
-    return render_template('post_form.html', form=form)
-
+    return render_template('post.html', form=form)

@@ -5,7 +5,7 @@
   	<form method="POST" action="/create-feed" role="form" class="" enctype="multipart/form-data">
         {{ form.csrf_token }}
         <div class="form-group {% if form.content.errors %}has-error{% endif %} ">
-            {{ form.content(class_='form-control') }}
+            {{ form.content(class_='form-control', placeholder='What do you want to tell us?') }}
             <span class="help-block">{{ ' '.join(form.content.errors) }}</span>
         </div>
 

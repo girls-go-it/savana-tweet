@@ -1,14 +1,17 @@
 {% extends "bootstrap/base.html" %}
-{% block title %}Flasky{% endblock %}
+
+{% block title %}Savanna Tweet{% endblock %}
+
 {% block styles%}
   {{super()}}
   <link rel="stylesheet" href="{{url_for('.static', filename='style.css')}}">
 {% endblock %}
+
 {% block navbar %}
   <div class="navbar navbar-inverse navbar-static-top">
     <div class="container">
       <div class="navbar-header">
-        <a class="navbar-brand" href="/">Savan Tweet</a>
+        <a class="navbar-brand" href="/">Savanna Tweet</a>
       </div>
       <div class="navbar-collapse collapse">
         {% if current_user.is_authenticated() %}
@@ -20,7 +23,7 @@
         <ul class="nav navbar-nav navbar-right">
         {% if current_user.is_authenticated() %}
         <li><a href="/profile">Profile</a></li>
-          <li><a href="/logout">Logout</a></li>
+        <li><a href="/logout">Logout</a></li>
         {%  else %}
         <li><a href="/login">Login</a></li>
         <li><a href="/signup">Sign Up</a></li>
