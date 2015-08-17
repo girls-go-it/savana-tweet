@@ -81,7 +81,12 @@ def feed():
 @login_required
 def profile_get():
     form = ProfileForm()
-    return render_template('profile.html', data={'form':form,'photo':''})
+    form.name.data = Animal.query.get(current_user.id).name
+    form.about_me.data = Animal.query.get(current_user.id).about_me
+    form.fur_color.data = Animal.query.get(current_user.id).fur_color
+    form.email.data = Animal.query.get(current_user.id).email
+    # form.animal_type.data = ProfileForm(request.form, category = 2)
+    return render_template('profile.html', form = form, photo = '')
 
 @app.route('/profile', methods=['POST'])
 @login_required
@@ -92,11 +97,26 @@ def profile_post():
         file = None
 
     form = ProfileForm(request.form)
+    if form.validate():
+        print "valid"
+    print form.errors
 
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(sys.path[0], app.config['UPLOAD_FOLDER'], filename))
-        print filename
-        return render_template('profile.html', data={'form':form,'photo':filename})
+    if form.validate_on_submit():
+        current_user.name = form.name.data
+        current_user.about_me = form.about_me.data
+        current_user.fur_color = form.fur_color.data
+        current_user.email = form.email.data
 
-    return render_template('profile.html', data={'form':form})
+        current_user.save()
+
+# print "pendis"
+
+
+
+    # if file and allowed_file(file.filename):
+    #     filename = secure_filename(file.filename)
+    #     file.save(os.path.join(sys.path[0], app.config['UPLOAD_FOLDER'], filename))
+    #     print filename
+    #     return render_template('profile.html', data={'form':form,'photo':filename})
+
+    return render_template('profile.html', form = form)

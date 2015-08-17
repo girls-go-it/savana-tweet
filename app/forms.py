@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms.fields import TextField, BooleanField, SubmitField, SelectField, FileField, PasswordField
+from wtforms.fields import TextField, TextAreaField, BooleanField, SubmitField, SelectField, FileField, PasswordField
 from wtforms.validators import Required
 
 from app import app
@@ -27,8 +27,9 @@ class LoginForm(Form):
 
 class ProfileForm(Form):
     name = TextField("Name")
+    about_me = TextAreaField("Tell us about yourself")
     fur_color = TextField("Fur color")
     email = TextField("Email")
-    animal_type = SelectField('Type', choices=[('carnivor', 'Carnivor'), ('ierbivor','Ierbivor'), ('omnivor','Omnivor')])
-    image_url = FileField('Photo'),
+    # animal_type = SelectField('Type', choices=[('carnivor', 'Carnivor'), ('ierbivor','Ierbivor'), ('omnivor','Omnivor')])
+    # image_url = FileField('Photo'),
     submit = SubmitField("Save")
