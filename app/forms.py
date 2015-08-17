@@ -54,3 +54,10 @@ class ProfileForm(Form):
     animal_type = SelectField('Type', choices=[('carnivor', 'Carnivor'), ('ierbivor','Ierbivor'), ('omnivor','Omnivor')])
     image_url = FileField('Photo'),
     submit = SubmitField("Save")
+
+
+class PostForm(Form):
+    content = TextField("Content")
+    image_url = FileField("Photo")
+    submit = SubmitField("Save")
+

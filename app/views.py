@@ -1,15 +1,14 @@
 from flask import render_template, request
-from forms import LoginForm, ProfileForm, SignupForm
+from forms import LoginForm, ProfileForm, PostForm, SignupForm
 from werkzeug import secure_filename
 import os, sys
 from flask import render_template, redirect, url_for
-from .models import Animal
+from app.models import Animal, Post
 from app import app, login_manager
 from flask.ext.login import current_user, login_user, login_required, logout_user
 from sqlalchemy import desc
-from app.models import Post
-from app import db
 
+from app import db
 from app import app
 
 app.secret_key = 'development key'
@@ -28,8 +27,9 @@ def load_animal(animal_id):
     return Animal.query.get(animal_id)
 
 @app.route('/')
+@login_required
 def index():
-    return render_template('base.html')
+    return render_template('index.html', user=current_user.username)
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
@@ -62,6 +62,7 @@ def logout():
 @login_required
 def feed():
     posts = Post.query.order_by(desc(Post.created_at)).all()
+
     return render_template('feed.html', posts=posts)
 
 @app.route('/profile', methods=['GET'])
@@ -87,3 +88,23 @@ def profile_post():
         return render_template('profile.html', data={'form':form,'photo':filename})
 
     return render_template('profile.html', data={'form':form})
+
+
+
+@app.route('/create-feed', methods=['GET', 'POST'])
+@login_required
+def created_feed():
+    form = PostForm(request.form)
+    print current_user.username
+    if form.validate_on_submit():
+        image_file = request.files.get('image', None)
+        print current_user, current_user.id, current_user.name
+        post = Post(content=form.content.data, animal=current_user)
+        if image_file and allowed_file(image_file.filename):
+            filename = secure_filename(image_file.filename)
+            image_file.save(os.path.join(sys.path[0], app.config['UPLOAD_FOLDER'], filename))
+        post.save()
+        return redirect(url_for('feed'))
+    return render_template('post_form.html', form=form)
+
+    
