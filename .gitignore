@@ -5,3 +5,4 @@ venv/
 app/static/images/
 migrations/versions/*.py
 *.db
+migrations/versions/*
