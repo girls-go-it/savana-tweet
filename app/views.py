@@ -40,8 +40,9 @@ def before_request():
 
 
 @app.route('/')
+@login_required
 def index():
-    return render_template('base.html')
+    return render_template('index.html', user=current_user.username)
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
