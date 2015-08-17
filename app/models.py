@@ -11,7 +11,7 @@ class Animal(UserMixin, db.Model):
     email = db.Column(db.String(255), unique=True)
     name = db.Column(db.String(255))
     fur_color = db.Column(db.String(255))
-    # animal_type = db.Column(db.String(255))
+    animal_type = db.Column(db.String(255))
     image_url = db.Column(db.String(255))
     username = db.Column(db.String(80), unique=True)
     h_password = db.Column(db.String(1000))

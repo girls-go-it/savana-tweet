@@ -23,18 +23,18 @@
         <h3>Personal info</h3>
           <div class="form-group">
 	          {{ form.name.label(class_='col-lg-3 control-label') }}
-	            <div class="form-group col-lg-9 {% if form.name.errors %}has-error{% endif %} ">
+	            <div class="form-group col-lg-9">
 					{{ form.name(class_='form-control', placeholder="Change your name") }}
 				</div>
           <div class="form-group">
 	          {{ form.about_me.label(class_='col-lg-3 control-label') }}
-	            <div class="form-group col-lg-9 {% if form.about_me.errors %}has-error{% endif %} ">
+	            <div class="form-group col-lg-9">
 					{{ form.about_me(class_='form-control', placeholder="Amazing Story") }}
 				</div>
           </div>
           <div class="form-group">
 	          {{ form.fur_color.label(class_='col-lg-3 control-label') }}
-	          <div class="form-group col-lg-9 {% if form.fur_color.errors %}has-error{% endif %} ">
+	          <div class="form-group col-lg-9">
 				  		{{ form.fur_color(class_='form-control', placeholder="Have you seen a barber?") }}
 					  </div>
           </div>
@@ -43,14 +43,16 @@
             <div class="form-group col-lg-9 {% if form.email.errors %}has-error{% endif %} ">
 				  		{{ form.email(class_='form-control', placeholder="You've changed your email?") }}
 					  </div>
+            <span class="help-block">{{ ' '.join(form.email.errors) }}</span>
           </div>
           <div class="form-group">
-            <label class="col-md-3 control-label"></label>
-            <div class="col-md-8">
-            	{{ form.submit(class_='btn btn-primary') }}
-              <span></span>
-              <input type="reset" class="btn btn-default" value="Cancel">
-            </div>
+            {{ form.animal_type.label(class_='col-lg-3 control-label') }}
+            <div class="form-group col-lg-9">
+				  		{{ form.animal_type(class_='form-control') }}
+					  </div>
+          </div>
+          <div class="form-group" style="margin-left: 233px">
+            {{ form.submit(class_='btn btn-primary') }}
           </div>
         </form>
       </div>

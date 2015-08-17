@@ -52,14 +52,14 @@ class ProfileForm(Form):
     name = TextField("Name")
     about_me = TextAreaField("Tell us about yourself")
     fur_color = TextField("Fur color")
-    email = TextField("Email")
-    # animal_type = SelectField('Type', choices=[('carnivor', 'Carnivor'), ('ierbivor','Ierbivor'), ('omnivor','Omnivor')])
+    email = TextField("Email", [Required()])
+    animal_type = SelectField('Type', choices=[('carnivor', 'Carnivor'), ('ierbivor','Ierbivor'), ('omnivor','Omnivor')])
     # image_url = FileField('Photo'),
     submit = SubmitField("Save")
 
 
 class PostForm(Form):
-    content = TextField("Content")
+    content = TextAreaField("Content", [Required()])
     image_url = FileField("Photo")
     submit = SubmitField("Save")
 
