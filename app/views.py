@@ -3,7 +3,7 @@ from forms import LoginForm, ProfileForm, PostForm, SignupForm
 from werkzeug import secure_filename
 import os, sys
 from flask import render_template, redirect, url_for
-from app.models import Animal, Post
+from app.models import Animal, Post, Like
 from app import app, login_manager
 from flask.ext.login import current_user, login_user, login_required, logout_user
 from sqlalchemy import desc
@@ -19,7 +19,16 @@ def allowed_file(filename):
 @app.route('/posts/<int:post_id>/like', methods=['POST'])
 @login_required
 def like_post(post_id):
-    Post.query.get(post_id).like()
+    post = Post.query.get(post_id)
+    Like(animal=current_user, post=post).save()
+    return redirect(url_for('feed'))
+
+@app.route('/posts/<int:post_id>/unlike', methods=['POST'])
+@login_required
+def unlike_post(post_id):
+    like = Like.query.filter_by(animal=current_user, post_id=post_id).first()
+    db.session.delete(like)
+    db.session.commit()
     return redirect(url_for('feed'))
 
 @login_manager.user_loader
@@ -62,7 +71,6 @@ def logout():
 @login_required
 def feed():
     posts = Post.query.order_by(desc(Post.created_at)).all()
-
     return render_template('feed.html', posts=posts)
 
 @app.route('/profile', methods=['GET'])

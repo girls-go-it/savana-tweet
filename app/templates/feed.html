@@ -17,13 +17,22 @@
         <img src="{% if post.animal.image_url %}{{ post.animal.image_url }}{% else %}{{ url_for('static', filename='download.png') }}{% endif %}" alt="poster image">
       </div>
       <div class="post-content">
-        <h5>Likes: {{ post.likes }} </h5>
+        <h5>Likes: {{ post.likes|length }} </h5>
         <h4>{{ post.animal.username }}</h4>
         <p>{{ post.content }}</p>
       </div>
-      <form action="/posts/{{ post.id }}/like" method="POST">
-        <input class="btn btn-link" type="submit" value="Like" style="margin-left: 548px;"/>
-      </form>
+
+      {% if current_user.likes_post(post) %}
+        <form action="/posts/{{ post.id }}/unlike" method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <input class="btn btn-link" type="submit" value="Unlike" style="margin-left: 548px;"/>
+        </form>
+      {% else %}
+        <form action="/posts/{{ post.id }}/like" method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <input class="btn btn-link" type="submit" value="Like" style="margin-left: 548px;"/>
+        </form>
+      {% endif %}
     </div>
   {% endfor %}
 </div>
