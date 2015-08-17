@@ -16,18 +16,6 @@ class Animal(UserMixin, db.Model):
     h_password = db.Column(db.String(1000))
     about_me = db.Column(db.String(500))
 
-    # def __init__(self, email, name, username, fur_color, animal_type, password, image_url=''):
-    #     self.email = email
-    #     self.name = name
-    #     self.username = username
-    #     self.fur_color = fur_color
-    #     self.animal_type = animal_type
-    #     self.image_url = image_url
-    #     self.set_password(password)
-    def __init__(self, username, password):
-        self.username = username
-        self.h_password = generate_password_hash(password)
-
     def __repr__(self):
         return '<User %s>' % self.name
 
@@ -53,10 +41,10 @@ class Post(db.Model):
     animal_id = db.Column(db.Integer(), db.ForeignKey('animal.id'))
     animal = db.relationship('Animal')
 
-    def __init__(self, content, animal_id, image_url=""):
+    def __init__(self, content, animal, image_url=""):
         self.content = content
-        self.animal_id = animal_id
         self.image_url = image_url
+        self.animal = animal
 
     def like(self):
         if not self.likes:
@@ -64,4 +52,32 @@ class Post(db.Model):
         else:
             self.likes += 1
         self.save()
+
+    def __repr__(self):
+        return '<User %d>' % self.id
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class Like(db.Model):
+    __tablename__ = 'like'
+
+    id = db.Column(db.Integer, primary_key=True)
+    animal_id = db.Column(db.Integer(), db.ForeignKey('animal.id'))
+    animal = db.relationship('Animal')
+    post_id = db.Column(db.Integer(), db.ForeignKey('post.id'))
+    post = db.relationship('Post')
+
+    def __init__(self, animal, post):
+        self.animal = animal
+        self.post = post
+
+    def __repr__(self):
+        return '<Like %d>' % self.id
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
 

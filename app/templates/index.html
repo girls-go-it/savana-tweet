@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+	<div>
+		<h2> Welcome, {{ user }}, to Savana Tweet</h2>
+		<img src='{{ url_for('static', filename='zebras-savanna.jpg')}}' class="pic">
+	</div>
+{% endblock %}
