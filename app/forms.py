@@ -1,6 +1,7 @@
 from flask.ext.wtf import Form
 from wtforms.fields import TextField, BooleanField, SubmitField, SelectField, FileField, PasswordField
-from wtforms.validators import Required
+from wtforms.validators import Required, EqualTo
+from flask.ext.wtf.html5 import EmailField
 
 from app import app
 from app.models import Animal
@@ -23,7 +24,28 @@ class LoginForm(Form):
             return False
         return True
 
+class SignupForm(Form):
+    username = TextField("Username", [Required()])
+    email = EmailField("Email", [Required()])
+    password = PasswordField("Password", [Required()])
+    password_confirmation = PasswordField("Password Confirmation", [Required(), EqualTo('password', message='Passwords must match')])
+    submit = SubmitField("Sign up")
 
+    def validate(self):
+        if not Form.validate(self):
+            return False
+
+        user = Animal.query.filter_by(username=self.username.data).first()
+        if user is not None:
+            self.username.errors.append("Username " + self.username.data + " already exist")
+            return False
+
+        user = Animal.query.filter_by(email=self.email.data).first()
+        if user is not None:
+            self.email.errors.append("Email " + self.email.data + " already exist")
+            return False
+
+        return True
 
 class ProfileForm(Form):
     name = TextField("Name")

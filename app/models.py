@@ -16,18 +16,6 @@ class Animal(UserMixin, db.Model):
     h_password = db.Column(db.String(1000))
     about_me = db.Column(db.String(500))
 
-    # def __init__(self, email, name, username, fur_color, animal_type, password, image_url=''):
-    #     self.email = email
-    #     self.name = name
-    #     self.username = username
-    #     self.fur_color = fur_color
-    #     self.animal_type = animal_type
-    #     self.image_url = image_url
-    #     self.set_password(password)
-    def __init__(self, username, password):
-        self.username = username
-        self.h_password = generate_password_hash(password)
-
     def __repr__(self):
         return '<User %s>' % self.name
 
