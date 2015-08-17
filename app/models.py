@@ -1,6 +1,7 @@
 from app import db
 import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.orm import relationship
 from flask.ext.login import UserMixin
 
 class Animal(UserMixin, db.Model):
@@ -25,10 +26,13 @@ class Animal(UserMixin, db.Model):
     def save(self):
         db.session.add(self)
         db.session.commit()
+    
+    def likes_post(self, post):
+        like = Like.query.filter_by(animal=self, post=post).first()
+        return like is not None
 
     def check_password(self, password):
         return check_password_hash(self.h_password, password)
-
 
 class Post(db.Model):
     __tablename__ = 'post'
@@ -37,21 +41,10 @@ class Post(db.Model):
     content = db.Column(db.Unicode(500))
     image_url = db.Column(db.String(255))
     likes = db.Column(db.Integer())
-    created_at = db.Column(db.DateTime(), default=datetime.datetime.now())
+    created_at = db.Column(db.DateTime(), default=datetime.datetime.now)
     animal_id = db.Column(db.Integer(), db.ForeignKey('animal.id'))
     animal = db.relationship('Animal')
-
-    def __init__(self, content, animal, image_url=""):
-        self.content = content
-        self.image_url = image_url
-        self.animal = animal
-
-    def like(self):
-        if not self.likes:
-            self.likes = 1
-        else:
-            self.likes += 1
-        self.save()
+    likes = relationship('Like')
 
     def __repr__(self):
         return '<User %d>' % self.id
