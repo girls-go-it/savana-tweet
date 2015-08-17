@@ -4,4 +4,6 @@ venv/
 .DS_Store
 app/static/uploads/
 instance/db_repository/versions/
+migrations/versions/*.pyc
+migrations/versions/*.py
 *.db
