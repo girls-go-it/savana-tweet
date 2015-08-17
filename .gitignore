@@ -5,3 +5,4 @@ venv/
 app/static/uploads/
 instance/db_repository/versions/
 *.db
+migrations/versions/*

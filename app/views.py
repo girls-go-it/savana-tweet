@@ -11,6 +11,8 @@ from sqlalchemy import desc
 from app import db
 from app import app
 
+from pprint import pprint
+
 app.secret_key = 'development key'
 
 def allowed_file(filename):
@@ -70,8 +72,19 @@ def logout():
 @app.route('/feed')
 @login_required
 def feed():
+    form = PostForm(request.form)
     posts = Post.query.order_by(desc(Post.created_at)).all()
-    return render_template('feed.html', posts=posts)
+    for post in posts:
+        post.date = {
+            'fullDate' : str(post.created_at),
+            'day'      : str(post.created_at.day),
+            'month'    : str(post.created_at.month),
+            'year'     : str(post.created_at.year),
+            'time'     : ((str(post.created_at)).split(' ')[1]).split('.')[0]
+        }
+        post.date['fullDate'] = post.date['fullDate'].split(' ')[0]
+    months = {'1':'Ian', '2':'Feb', '3':'Mar', '4':'Apr', '5':'Mai', '6':'Iun', '7':'Iul', '8':'Aug', '9':'Sep', '10':'Oct', '11':'Noi', '12':'Dec'}
+    return render_template('feed2.html', form=form,posts=posts,months=months)
 
 @app.route('/profile', methods=['GET'])
 @login_required

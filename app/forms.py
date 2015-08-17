@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms.fields import TextField, BooleanField, SubmitField, SelectField, FileField, PasswordField
+from wtforms.fields import TextField, BooleanField, SubmitField, SelectField, FileField, PasswordField, TextAreaField
 from wtforms.validators import Required, EqualTo
 from flask.ext.wtf.html5 import EmailField
 
@@ -57,7 +57,7 @@ class ProfileForm(Form):
 
 
 class PostForm(Form):
-    content = TextField("Content")
+    content = TextAreaField("Content")
     image_url = FileField("Photo")
     submit = SubmitField("Save")
 

@@ -47,7 +47,7 @@ class Post(db.Model):
     likes = relationship('Like')
 
     def __repr__(self):
-        return '<User %d>' % self.id
+        return 'content:{} \r\n image: {} \r\n likes: {} \r\n date: {} \r\n animal_id: {} \r\n animal: {} \r\n'.format(self.content, self.image_url, self.likes, self.created_at, self.animal_id, self.animal)
 
     def save(self):
         db.session.add(self)
