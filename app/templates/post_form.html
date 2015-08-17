@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="col-lg-3 col-md-offset-4">
+    <h2>New post</h2>
+  	<form method="POST" action="/create-feed" role="form" class="" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        <div class="form-group {% if form.content.errors %}has-error{% endif %} ">
+            {{ form.content(class_='form-control') }}
+            <span class="help-block">{{ ' '.join(form.content.errors) }}</span>
+        </div>
+
+        <div class="form-group {% if form.image_url.errors %}has-error{% endif %} ">
+            {{ form.image_url(class_='form-control') }}
+            <span class="help-block">{{ ' '.join(form.image_url.errors) }}</span>
+        </div>
+
+        <div class="form-group ">
+            {{ form.submit(class_='btn btn-default') }}
+        </div>
+    </form>
+<div>
+{% endblock %}

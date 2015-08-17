@@ -22,6 +22,5 @@ login_manager.login_view = 'login'
 login_manager.login_message = 'Please consider logging in. You don\'t have access here!'
 
 
-
 from app import views, models
 
