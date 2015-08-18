@@ -81,6 +81,11 @@
 #timeline .timeline-movement .timeline-item {
   padding: 20px 0;
 }
+
+.timeline-item .post_img {
+  max-width: 90%;
+}
+
 #timeline .timeline-movement .timeline-item .timeline-panel {
   border: 1px solid #d4d4d4;
   border-radius: 3px;
