@@ -85,7 +85,7 @@ def feed():
         }
         post.date['fullDate'] = post.date['fullDate'].split(' ')[0]
     months = {'1':'Ian', '2':'Feb', '3':'Mar', '4':'Apr', '5':'Mai', '6':'Iun', '7':'Iul', '8':'Aug', '9':'Sep', '10':'Oct', '11':'Noi', '12':'Dec'}
-    return render_template('feed2.html', form=form,posts=posts,months=months)
+    return render_template('feed.html', form=form, posts=posts, months=months)
 
 @app.route('/profile', methods=['GET'])
 @login_required
@@ -109,9 +109,10 @@ def profile_post():
         current_user.email = form.email.data
         current_user.animal_type = form.animal_type.data
 
-        image = 'images/'+secure_filename(str(time())+form.image.data.filename)
-        form.image.data.save(app.config['UPLOADS'] + image)
-        current_user.image_url = image
+        if form.image.data:
+            image = 'images/'+secure_filename(str(time())+form.image.data.filename)
+            form.image.data.save(app.config['UPLOADS'] + image)
+            current_user.image_url = image
 
         current_user.save()
         return redirect(url_for("index"))
@@ -119,14 +120,16 @@ def profile_post():
 
 
 
-@app.route('/create-feed', methods=['GET', 'POST'])
+@app.route('/create-feed', methods=['POST'])
 @login_required
 def created_feed():
     form = PostForm()
     if form.validate_on_submit():
-        image = 'images/'+secure_filename(str(time())+form.image.data.filename)
-        form.image.data.save(app.config['UPLOADS'] + image)
-        post = Post(content=form.content.data, animal=current_user, image_url=image)
+        post = Post(content=form.content.data, animal=current_user)
+        if form.image.data:
+            image = 'images/'+secure_filename(str(time())+form.image.data.filename)
+            form.image.data.save(app.config['UPLOADS'] + image)
+            post.image_url = image
+
         post.save()
-        return redirect(url_for('feed'))
-    return render_template('post.html', form=form)
+    return redirect(url_for('feed'))
