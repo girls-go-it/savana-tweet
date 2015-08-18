@@ -101,6 +101,10 @@
   padding: 0;
   margin: 0;
 }
+#timeline .timeline-movement .timeline-item .timeline-panel .timeline-panel-ul li {
+  margin: 10px 0;
+}
+
 #timeline .timeline-movement .timeline-item .timeline-panel.left .timeline-panel-ul {
   text-align: right;
 }

@@ -6,32 +6,29 @@
   	<hr>
 	<div class="row">
     <form action="/profile" class="form-horizontal" role="form" enctype="multipart/form-data" method="POST">
-        {{ form.csrf_token }}
-      <!-- left column -->
-      <!-- <div class="col-md-3">
-        <div class="text-center">
-          <img src="/static/uploads/{{ photo }}" onError="this.src='//placehold.it/100'" class="avatar img-circle" alt="avatar" style="max-width: 100px;">
-          <h6>Upload a different photo...</h6>
-
-          <input type="file" name="file" class="form-control">
+            <!-- left column -->
+        <div class="col-md-3">
+          <div class="text-center">
+            <label style="cursor: pointer;" for="{{form.image.id}}"><img src="/static/{{ form.image_url }}" onError="this.src='//placehold.it/100'" class="avatar img-circle" alt="avatar" style="max-width: 100px;"></label>
+            <h6>Click the profile picture to change it.</h6>
+            {{ form.image(class_='form-control',style="display: none;") }}
+          </div>
         </div>
-      </div> -->
-      
-      <!-- edit form column -->
-      <div class="col-md-5 col-md-offset-3 personal-info">
+      {{ form.csrf_token }}
+      <div class="col-md-6 col-md-offset-1 personal-info">
 				{{ form.csrf_token }}
         <h3>Personal info</h3>
           <div class="form-group">
 	          {{ form.name.label(class_='col-lg-3 control-label') }}
 	            <div class="form-group col-lg-9">
-					{{ form.name(class_='form-control', placeholder="Change your name") }}
-				</div>
-          <div class="form-group">
-	          {{ form.about_me.label(class_='col-lg-3 control-label') }}
-	            <div class="form-group col-lg-9">
-					{{ form.about_me(class_='form-control', placeholder="Amazing Story") }}
-				</div>
-          </div>
+      					{{ form.name(class_='form-control', placeholder="Change your name") }}
+      				</div>
+              <div class="form-group">
+      	          {{ form.about_me.label(class_='col-lg-3 control-label') }}
+  	            <div class="form-group col-lg-9">
+        					{{ form.about_me(class_='form-control', placeholder="Amazing Story") }}
+        				</div>
+              </div>
           <div class="form-group">
 	          {{ form.fur_color.label(class_='col-lg-3 control-label') }}
 	          <div class="form-group col-lg-9">
@@ -50,12 +47,6 @@
             <div class="form-group col-lg-9">
               {{ form.animal_type(class_='form-control') }}
             </div>
-          </div>
-          <div class="form-group">
-            <label for="profile_pic" class='col-lg-3 control-label'>Animal photo</label>
-            <div class="form-group col-lg-9">
-				  		<input id="profile_pic" type="file" name="file" class="form-control">
-					  </div>
           </div>
           <div class="form-group" style="margin-left: 233px">
             {{ form.submit(class_='btn btn-primary') }}

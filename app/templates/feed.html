@@ -2,7 +2,7 @@
 {% block content %}
 <div class="col-md-3">
   <div class="thumbnail">
-    <img src="{% if current_user.image_url %}{{ current_user.image_url }}{% else %}{{ url_for('static', filename='download.png') }}{% endif %}" alt="poster image">
+    <img src="{% if current_user.image_url %}{{ url_for('static', filename=current_user.image_url) }}{% else %}{{ url_for('static', filename='download.png') }}{% endif %}" alt="poster image">
     <div class="caption">
       <h3>Animal Name: {{ current_user.name }}</h3>
       <h5>Fur Color: {{ current_user.fur_color }}</h5>
@@ -16,7 +16,7 @@
   {% for post in posts %}
     <div class="thumbnail clearfix">
       <div class="side-post">
-        <img src="{% if post.animal.image_url %}{{ post.animal.image_url }}{% else %}{{ url_for('static', filename='download.png') }}{% endif %}" alt="poster image">
+        <img src="{% if post.image_url %}{{ url_for('static', filename=post.image_url) }}{% else %}{{ url_for('static', filename='download.png') }}{% endif %}" alt="poster image">
       </div>
       <div class="post-content">
         <h5>Likes: {{ post.likes|length }} </h5>

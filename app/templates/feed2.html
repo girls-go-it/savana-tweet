@@ -20,11 +20,11 @@
               <span class="help-block">{{ ' '.join(form.content.errors) }}</span>
           </div>
 
-          <div class="form-group {% if form.image_url.errors %}has-error{% endif %} ">
-              <label style="display: inline-block;" for="{{form.image_url.id}}"><span style="font-size: 25px; cursor: pointer;" class="glyphicon glyphicon-picture"></span></label>
-              <input id="{{form.image_url.id}}" type="file" name="file" style="display: none">
+          <div class="form-group {% if form.image.errors %}has-error{% endif %} ">
+              <label style="display: inline-block;" for="{{form.image.id}}"><span style="font-size: 25px; cursor: pointer;" class="glyphicon glyphicon-picture"></span></label>
+              {{ form.image(class_='form-control',style="display: none") }}
               {{ form.submit(class_='btn btn-sm btn-default', style="margin-left: 5px; margin-top: -15px; display: inline-block;") }}
-              <span class="help-block">{{ ' '.join(form.image_url.errors) }}</span>
+              <span class="help-block">{{ ' '.join(form.image.errors) }}</span>
 
           </div>
       </form>
@@ -68,9 +68,9 @@
                   <div class="{% if not left %} {{'col-sm-offset-1 '}} {% endif %}col-sm-11">
                       <div class="timeline-panel {% if left %} {{'left'}} {% else %} {{'right'}} {% endif %}">
                           <ul class="timeline-panel-ul">
-                              <li><img class="profile_pic" src="{% if post.animal.image_url %}{{ post.animal.image_url }}{% else %}{{ url_for('static', filename='download.png') }}{% endif %}" alt="poster image"><span class="importo">{{ post.animal.username }}</span></li>
+                              <li><img class="profile_pic" src="/static/{% if post.animal.image_url %}{{ post.animal.image_url }}{% else %}{{ url_for('static', filename='download.png') }}{% endif %}" alt="poster image"><span class="importo">{{ post.animal.username }}</span></li>
                               {% if post.image_url %}
-                                <li><img class="post_img" src="{{post.image_url}}" alt=""></li>
+                                <li><a href="/static/{{post.image_url}}" target="BLANK"><img class="post_img" src="/static/{{post.image_url}}" alt=""></a></li>
                               {% endif %}
 
                               <li><span class="causale">{{ post.content }}</span> </li>

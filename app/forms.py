@@ -1,5 +1,6 @@
 from flask.ext.wtf import Form
-from wtforms.fields import TextField, BooleanField, SubmitField, SelectField, FileField, PasswordField, TextAreaField
+from wtforms.fields import TextField, TextAreaField, BooleanField, SubmitField, SelectField, PasswordField
+from flask_wtf.file import FileField
 from wtforms.validators import Required, EqualTo
 from flask.ext.wtf.html5 import EmailField
 
@@ -53,12 +54,12 @@ class ProfileForm(Form):
     fur_color = TextField("Fur color")
     email = TextField("Email", [Required()])
     animal_type = SelectField('Type', choices=[('carnivor', 'Carnivor'), ('ierbivor','Ierbivor'), ('omnivor','Omnivor')])
-    # image_url = FileField('Photo'),
+    image = FileField("Photo")
     submit = SubmitField("Save")
 
 
 class PostForm(Form):
     content = TextAreaField("Content", [Required()])
-    image_url = FileField("Photo")
+    image = FileField("Photo")
     submit = SubmitField("Save")
 

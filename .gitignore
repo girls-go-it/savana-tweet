@@ -2,9 +2,8 @@ venv/
 .idea/
 *.pyc
 .DS_Store
+app/static/images/
 app/static/uploads/
-instance/db_repository/versions/
-migrations/versions/*.pyc
 migrations/versions/*.py
 *.db
 migrations/versions/*

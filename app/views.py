@@ -7,6 +7,7 @@ from app.models import Animal, Post, Like
 from app import app, login_manager
 from flask.ext.login import current_user, login_user, login_required, logout_user
 from sqlalchemy import desc
+from time import time
 
 from app import db
 from app import app
@@ -44,7 +45,7 @@ def index():
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
-    form = SignupForm(request.form)
+    form = SignupForm()
     if form.validate_on_submit():
         new_animal = Animal(username=form.username.data, email=form.email.data)
         new_animal.set_password(form.password.data)
@@ -55,7 +56,7 @@ def signup():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm(request.form)
+    form = LoginForm()
 
     if form.validate_on_submit():
         user = Animal.query.filter_by(username=form.username.data).first()
@@ -72,18 +73,13 @@ def logout():
 @app.route('/feed', methods=['GET', 'POST'])
 @login_required
 def feed():
-    form = PostForm(request.form)
-    print current_user.username
+    form = PostForm()
     if form.validate_on_submit():
-        image_file = request.files.get('file', None)
-        filename = None
-        if image_file and allowed_file(image_file.filename):
-            filename = secure_filename(image_file.filename)
-            image_file.save(os.path.join(sys.path[0], app.config['UPLOAD_FOLDER'], filename))
-            filename = os.path.join(app.config['CONTENT_FOLDER'], filename)
-        post = Post(content=form.content.data, animal=current_user, image_url=filename)
+        print form.image.data.filename
+        image = 'images/'+secure_filename(str(time())+form.image.data.filename)
+        form.image.data.save(app.config['UPLOADS'] + image)
+        post = Post(content=form.content.data, animal=current_user, image_url=image)
         post.save()
-        return redirect(url_for('feed'))
 
     posts = Post.query.order_by(desc(Post.created_at)).all()
     for post in posts:
@@ -101,33 +97,30 @@ def feed():
 @app.route('/profile', methods=['GET'])
 @login_required
 def profile_get():
-    form = ProfileForm(request.form)
+    form = ProfileForm()
     form.name.data = current_user.name
     form.about_me.data = current_user.about_me
     form.fur_color.data = current_user.fur_color
     form.email.data = current_user.email
     form.animal_type.data = current_user.animal_type
+    form.image_url = current_user.image_url
     return render_template('profile.html', form = form, photo = '')
 
 @app.route('/profile', methods=['POST'])
 @login_required
 def profile_post():
-    form = ProfileForm(request.form)
-
-    image_file = request.files.get('file', None)
-    filename = None
-    if image_file and allowed_file(image_file.filename):
-        filename = secure_filename(image_file.filename)
-        image_file.save(os.path.join(sys.path[0], app.config['UPLOAD_FOLDER'], filename))
-        filename = os.path.join(app.config['CONTENT_FOLDER'], filename)
-
+    form = ProfileForm()
     if form.validate_on_submit():
         current_user.name = form.name.data
         current_user.about_me = form.about_me.data
         current_user.fur_color = form.fur_color.data
         current_user.email = form.email.data
         current_user.animal_type = form.animal_type.data
-        current_user.image_url = filename
+
+        image = 'images/'+secure_filename(str(time())+form.image.data.filename)
+        form.image.data.save(app.config['UPLOADS'] + image)
+        current_user.image_url = image
+
         current_user.save()
         return redirect(url_for("index"))
     return render_template('profile.html', form=form)
@@ -136,15 +129,11 @@ def profile_post():
 @app.route('/create-feed', methods=['GET', 'POST'])
 @login_required
 def created_feed():
-    form = PostForm(request.form)
-    print current_user.username
+    form = PostForm()
     if form.validate_on_submit():
-        image_file = request.files.get('image', None)
-        print image_file
-        post = Post(content=form.content.data, animal=current_user)
-        if image_file and allowed_file(image_file.filename):
-            filename = secure_filename(image_file.filename)
-            image_file.save(os.path.join(sys.path[0], app.config['UPLOAD_FOLDER'], filename))
+        image = 'images/'+secure_filename(str(time())+form.image.data.filename)
+        form.image.data.save(app.config['UPLOADS'] + image)
+        post = Post(content=form.content.data, animal=current_user, image_url=image)
         post.save()
         return redirect(url_for('feed'))
     return render_template('feed2.html', form=form)
