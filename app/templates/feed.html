@@ -64,13 +64,16 @@
                   <div class="{% if not left %} {{'col-sm-offset-1 '}} {% endif %}col-sm-11">
                       <div class="timeline-panel {% if left %} {{'left'}} {% else %} {{'right'}} {% endif %}">
                           <ul class="timeline-panel-ul">
-                              {{ post.image }}
+                              
                               <li><img class="profile_pic" src="{% if post.animal.image_url %}{{ url_for('static', filename=post.animal.image_url) }}{% else %}{{ url_for('static', filename='download.png') }}{% endif %}" alt="poster image"><span class="importo">{{ post.username }}</span></li>
+
                               <li><span>{{ post.content }}</span> </li>
                               {% if post.image_url %}
-                              <li><img style="max-width: 500px" src="{{ url_for('static', filename=post.image_url) }}" alt="poster image"><span class="importo">{{ post.username }}</span></li>
+                                <li><img class="post_img" src="{{ url_for('static', filename=post.image_url) }}" alt="poster image"><span class="importo">{{ post.username }}</span></li>
                               {% endif %}
+                              
                               <li><p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{post.date.time}} </small></p></li>
+                              
                               <li>
                                 {% if current_user.likes_post(post) %}
                                   <form action="/posts/{{ post.id }}/unlike" method="POST">
