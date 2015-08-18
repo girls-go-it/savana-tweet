@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="col-lg-3 col-md-offset-4">
+    <div class="col-lg-3 col-md-offset-4">
     <h2>New post</h2>
-  	<form method="POST" action="/create-feed" role="form" class="" enctype="multipart/form-data">
+    <form method="POST" action="/create-feed" role="form" class="" enctype="multipart/form-data">
         {{ form.csrf_token }}
         <div class="form-group {% if form.content.errors %}has-error{% endif %} ">
             {{ form.content(class_='form-control', placeholder='What do you want to tell us?') }}
@@ -18,5 +18,5 @@
             {{ form.submit(class_='btn btn-default') }}
         </div>
     </form>
-<div>
+    <div>
 {% endblock %}
