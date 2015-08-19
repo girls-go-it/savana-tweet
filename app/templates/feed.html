@@ -65,11 +65,11 @@
                       <div class="timeline-panel {% if left %} {{'left'}} {% else %} {{'right'}} {% endif %}">
                           <ul class="timeline-panel-ul">
                               
-                              <li><img class="profile_pic" src="{% if post.animal.image_url %}{{ url_for('static', filename=post.animal.image_url) }}{% else %}{{ url_for('static', filename='download.png') }}{% endif %}" alt="poster image"><span class="importo">{{ post.username }}</span></li>
+                              <li><img class="profile_pic" src="{% if post.animal.image_url %}{{ url_for('static', filename=post.animal.image_url) }}{% else %}{{ url_for('static', filename='download.png') }}{% endif %}" alt="poster image"><span class="importo">{{ post.animal.username }}</span></li>
 
                               <li><span>{{ post.content }}</span> </li>
                               {% if post.image_url %}
-                                <li><img class="post_img" src="{{ url_for('static', filename=post.image_url) }}" alt="poster image"><span class="importo">{{ post.username }}</span></li>
+                                <li><a target="BLANK" href="{{ url_for('static', filename=post.image_url) }}"><img class="post_img" src="{{ url_for('static', filename=post.image_url) }}" alt="poster image"></a></li>
                               {% endif %}
                               
                               <li><p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{post.date.time}} </small></p></li>
